@@ -5,13 +5,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static com.company.DemoApp.*;
-
 public class UnoApp {
-    public static Player[] allPlayers = new Player[4];
     private int session = 0;
     private CardDeck deck = new CardDeck();                  // first our card deck
-    public static ArrayList<Player> players = new ArrayList<>();    // player
+    private ArrayList<Player> players = new ArrayList<>();    // player
     private DropPile drop = new DropPile();// we need drop pile for the first and other cards that are played
     private final Scanner input;
     private final PrintStream output;
@@ -20,7 +17,7 @@ public class UnoApp {
     int direction = 0;
     private String cardInput;
     private boolean clockwise = true; // merkt sich in welche Richtung das Spiel läuft
-    public static int round = 1;
+    int round = 1;
 
     public ArrayList<Player> getPlayers() {
         return players;
@@ -29,10 +26,6 @@ public class UnoApp {
     public UnoApp(Scanner input, PrintStream output) {       //constructor is required
         this.input = input;
         this.output = output;
-    }
-
-    public static int getRound() {
-        return round;
     }
 
     public boolean isClockwise() {
@@ -71,7 +64,7 @@ public class UnoApp {
         }
         System.out.println(players);
         for (int i = 0; i < players.size(); i++) {
-            for (int j = 0; j < 7; j++) {
+            for (int j = 0; j < 4; j++) {
                 players.get(i).addCards(deck.drawCard());
             }
             System.out.println(players.get(i).getName() + " " + players.get(i).getHandCards());
@@ -111,7 +104,7 @@ public class UnoApp {
         fileReader.close();
     }
 
-    public void UnoButton() throws IOException {
+   public void UnoButton() throws IOException {
         Scanner scanner = new Scanner(System.in);
         if (players.get(currentPlayerIndex).getHandCards().size() == 2) {
             System.out.println("You have only two more cards left");
@@ -141,7 +134,7 @@ public class UnoApp {
             c = deck.drawCard();
             deck.remove(c);
         }
-        if (c.getZeichen() != null && c.getZeichen().equals("<->") || (c.getZeichen() != null && (c.getZeichen().equals("<->") && c.getColor().equals(drop.getLatestCard().getColor())))) {
+        if (c.getZeichen() != null && c.getZeichen().equals("<->") || (c.getZeichen()!=null && (c.getZeichen().equals("<->") && c.getColor().equals(drop.getLatestCard().getColor())))) {
             if (clockwise == true) {
                 clockwise = false;
             } else {
@@ -156,41 +149,31 @@ public class UnoApp {
 
     public void startNewRound() {
         round++;
-        System.out.println("Current player has no cards left. This round is over. Let´s start new round!");
-        System.out.println("Round: " + round);
-
-    }
-
-    public void thisRoundIsOver() {
-        collectPointsFromThisRound();
-
-    }
-
-    public static int collectPointsFromThisRound() {
         int sum = 0;
+        System.out.println("Current player has no cards left. This round is over. Let´s start new round!");
         for (int i = 0; i < players.size(); i++) { // um die Punkte zusammenzuzählen
-            sum = sum + players.get(i).getHandCardPoints();
+            if (players.get(i).getHandCards() == null) { // der Spieler hat die Runde gewonnen
+                System.out.println("Spieler: " + i + " hat keine Karten mehr");
+                System.out.println(players.get(i) + " has won: " + sum);
+            } else {
+                sum = sum + players.get(i).getHandCardPoints();
+                System.out.println(players.get(i).getHandCardPoints());
+            }
         }
-        System.out.println("You won this round, and these are your points: " + sum);
-        return sum;
-
     }
 
     public void Run() throws IOException, SQLException {
         initialize(); // aks players for name, write names for human players, create bots, create handcards
         firstCardOpen();
-
+        //  printState();
         while (!exit) {
             System.out.println("This is UnaApp.currentPlayerIndex: " + currentPlayerIndex + "executing player.playCards");
             players.get(currentPlayerIndex).playCards(drop, deck);
             System.out.println("Checking if current player has cards left");
-            if (players.get(currentPlayerIndex).getHandCards().size() == 0) {
-                thisRoundIsOver();
+            if (players.get(currentPlayerIndex).getHandCards() == null) {
                 System.out.println("Start new round");
                 startNewRound();
-
             }
-
             if (drop.getLatestCard().getZeichen() != null && drop.getLatestCard().getZeichen().equals("Ø")) {
                 if (clockwise) {
                     if (currentPlayerIndex == 0) {
@@ -230,21 +213,21 @@ public class UnoApp {
                 //     updateState();
                 //     printState(); //Nur die Ausgabe
             }
-            UnoButton();
-            cicleTroughPlayers();
+           UnoButton();
+           cicleTroughPlayers();
             if (drop.getLatestCard().getZeichen() != null && drop.getLatestCard().getZeichen().equals("+2")) {
                 getPlayers().get(currentPlayerIndex).takeCard(deck);
                 getPlayers().get(currentPlayerIndex).takeCard(deck);
                 if (clockwise) {
                     if (currentPlayerIndex == 0) {
-                        currentPlayerIndex = 1;
-                    } else if (currentPlayerIndex == 1) {
-                        currentPlayerIndex = 2;
-                    } else if (currentPlayerIndex == 2) {
-                        currentPlayerIndex = 3;
-                    } else {
-                        currentPlayerIndex = 0;
-                    }
+                    currentPlayerIndex = 1;
+                } else if (currentPlayerIndex == 1) {
+                    currentPlayerIndex = 2;
+                } else if (currentPlayerIndex == 2) {
+                    currentPlayerIndex = 3;
+                } else {
+                    currentPlayerIndex = 0;
+                }
                 } else {
                     if (currentPlayerIndex == 0) {
                         currentPlayerIndex = 3;
@@ -258,7 +241,6 @@ public class UnoApp {
 
                 }
             }
-
         }
     }
 
