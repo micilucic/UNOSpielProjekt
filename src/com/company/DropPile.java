@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class DropPile {
     private ArrayList<Card> dropPile = new ArrayList<>();
 
+
     public DropPile() {
         this.dropPile = dropPile;
     }
@@ -12,6 +13,8 @@ public class DropPile {
     public ArrayList<Card> getDropPile() {
         return getDropPile();
     }
+
+
 
     // when one card is thrown it goes on the pile into new Arraylist
     public void dropCard(Card card) {
@@ -26,8 +29,11 @@ public class DropPile {
         return a;
     }
 
+
+
     // removing card from drop pile after it has been drawn
     public void removeCard(){
         dropPile.remove(dropPile.size() - 1);
     }
+
 }

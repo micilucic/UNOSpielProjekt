@@ -51,7 +51,6 @@ public class BotPlayer extends Player {
                 }
                 if (getHandCards().size() == 2) {
                     System.out.println("uno!");
-                    playCards(drop, deck);
                 }
                 if (drop.getLatestCard().getZeichen() != null && drop.getLatestCard().getZeichen().equals("+2")) {
                     System.out.println("the last card is +2 - you will get 2 cards and sit out for a bit.");

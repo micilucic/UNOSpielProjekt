@@ -45,7 +45,7 @@ public abstract class Player {
 
     public boolean canThisCardBePlayed(Card topCard, Card handCard) {
 
-        System.out.println("This is function canThisCardBePlayed: TopCard: " + topCard + " HandCard: " + handCard);
+       // System.out.println("This is function canThisCardBePlayed: TopCard: " + topCard + " HandCard: " + handCard);
         if (topCard.getColor().equals(handCard.getColor())) {
             return true;
         } else if (topCard.getCardNr() == handCard.getCardNr()) {
@@ -83,10 +83,11 @@ public abstract class Player {
         int points = 0;
         for (Card c : handCards) {
             points += c.getValue();
-
         }
         return points;
     }
+
+
 
 
     public abstract boolean handIsEmpty();
