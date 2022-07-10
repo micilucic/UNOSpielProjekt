@@ -97,8 +97,26 @@ public class HumanPlayer extends Player {
                 }
                 takeCard(deck);
             }
+            if (p.getHandCards().size() == 2) {
+                System.out.println("You have only two more cards left");
+                String uno = scanner.next();
+                if (uno.equals("uno")) {
+                    p.playCards(drop, deck);
+                } else {
+                    System.out.println("You didnt say uno - you must take two more cards");
+                    p.takeCard(deck);
+                    p.takeCard(deck);
+                   p.playCards(drop, deck);
+                }
+                try {
+                    int numUno = Integer.parseInt(uno);
+                } catch (NumberFormatException e) {
+                    System.out.println("Please enter a valid input");
+                }
+            }
         }
     }
+
 
     public boolean handIsEmpty() {
         if (getHandCards().size() == 0) {

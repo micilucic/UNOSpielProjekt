@@ -104,7 +104,7 @@ public class UnoApp {
         fileReader.close();
     }
 
-    public void UnoButton() throws IOException {
+   public void UnoButton() throws IOException {
         Scanner scanner = new Scanner(System.in);
         if (players.get(currentPlayerIndex).getHandCards().size() == 2) {
             System.out.println("You have only two more cards left");
@@ -177,23 +177,23 @@ public class UnoApp {
             if (drop.getLatestCard().getZeichen() != null && drop.getLatestCard().getZeichen().equals("Ø")) {
                 if (clockwise) {
                     if (currentPlayerIndex == 0) {
-                        currentPlayerIndex = 2;
-                    } else if (currentPlayerIndex == 1) {
                         currentPlayerIndex = 3;
-                    } else if (currentPlayerIndex == 2) {
+                    } else if (currentPlayerIndex == 1) {
                         currentPlayerIndex = 0;
-                    } else {
+                    } else if (currentPlayerIndex == 2) {
                         currentPlayerIndex = 1;
+                    } else {
+                        currentPlayerIndex = 2;
                     }
                 } else {
                     if (currentPlayerIndex == 0) {
-                        currentPlayerIndex = 2;
-                    } else if (currentPlayerIndex == 1) {
-                        currentPlayerIndex = 3;
-                    } else if (currentPlayerIndex == 2) {
-                        currentPlayerIndex = 0;
-                    } else {
                         currentPlayerIndex = 1;
+                    } else if (currentPlayerIndex == 1) {
+                        currentPlayerIndex = 2;
+                    } else if (currentPlayerIndex == 2) {
+                        currentPlayerIndex = 3;
+                    } else {
+                        currentPlayerIndex = 0;
                     }
                 }
                 System.out.println("This is skip player function! Next player is: " + currentPlayerIndex);
@@ -213,13 +213,33 @@ public class UnoApp {
                 //     updateState();
                 //     printState(); //Nur die Ausgabe
             }
-            UnoButton();
-            cicleTroughPlayers();
+           UnoButton();
+           cicleTroughPlayers();
             if (drop.getLatestCard().getZeichen() != null && drop.getLatestCard().getZeichen().equals("+2")) {
-                cicleTroughPlayers();
                 getPlayers().get(currentPlayerIndex).takeCard(deck);
                 getPlayers().get(currentPlayerIndex).takeCard(deck);
-                currentPlayerIndex = currentPlayerIndex + 1;
+                if (clockwise) {
+                    if (currentPlayerIndex == 0) {
+                    currentPlayerIndex = 1;
+                } else if (currentPlayerIndex == 1) {
+                    currentPlayerIndex = 2;
+                } else if (currentPlayerIndex == 2) {
+                    currentPlayerIndex = 3;
+                } else {
+                    currentPlayerIndex = 0;
+                }
+                } else {
+                    if (currentPlayerIndex == 0) {
+                        currentPlayerIndex = 3;
+                    } else if (currentPlayerIndex == 1) {
+                        currentPlayerIndex = 0;
+                    } else if (currentPlayerIndex == 2) {
+                        currentPlayerIndex = 1;
+                    } else {
+                        currentPlayerIndex = 2;
+                    }
+
+                }
             }
         }
     }
