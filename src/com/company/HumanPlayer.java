@@ -17,7 +17,7 @@ public class HumanPlayer extends Player {
         if (scanner.nextLine().equals("help"))
             UnoApp.help();
         System.out.println();
-        System.out.println("Hello from playCards, I am player :" + getName() + "and these are my cards: " + getHandCards().size());
+        System.out.println("Hello from playCards, I am player: " + getName() + "and these are my cards: " + getHandCards().size());
 
         if (drop.getLatestCard().getZeichen() != null && drop.getLatestCard().getZeichen().equals("+2")){
             System.out.println("the last card is +2 - you will get 2 cards and sit out for a bit.");
@@ -65,12 +65,14 @@ public class HumanPlayer extends Player {
         System.out.println("Please choose one card. If you cannot play any card, please type 0");
         int cardIndex = scanner.nextInt() - 1;
         if (canThisCardBePlayed(drop.getLatestCard(), getHandCards().get(cardIndex))==false) {
-            System.out.println("You could not play any card. Now you will get one from the pile.");
+            System.out.println("You could not play any card. Now you will get one from the pile. Please try again.");
             if (deck.isEmpty()) {
                 fillEmptyCardDeck(deck, drop);
             }
             takeCard(deck);
             System.out.println("These are your current cards: " + getHandCards());
+            System.out.println("Please play another card");
+            cardIndex = scanner.nextInt()-1;
         }
         System.out.println("You chose the following card: " + getHandCards().get(cardIndex));
         if (canThisCardBePlayed(drop.getLatestCard(), getHandCards().get(cardIndex)) == true && (getHandCards().get(cardIndex).getZeichen() != null) && (getHandCards().get(cardIndex).getZeichen().equals("~"))) {
@@ -114,16 +116,16 @@ public class HumanPlayer extends Player {
         boolean pickedColor = false;
         String chosenColor = null;
 
-        if (colorInput.equals("Yellow")) {
+        if (colorInput!=null && colorInput.equals("Yellow")) {
             System.out.println(p.getName() + " chose the following color: " + colorInput);
             pickedColor = true;
-        } else if (colorInput.equals("Green")) {
+        } else if (colorInput!=null && colorInput.equals("Green")) {
             System.out.println(p.getName() + " chose the following color: " + colorInput);
             pickedColor = true;
-        } else if (colorInput.equals("Blue")) {
+        } else if (colorInput!=null && colorInput.equals("Blue")) {
             System.out.println(p.getName() + " chose the following color: " + colorInput);
             pickedColor = true;
-        } else if (colorInput.equals("Red")) {
+        } else if (colorInput!=null && colorInput.equals("Red")) {
             System.out.println(p.getName() + " chose the following color: " + colorInput);
             pickedColor = true;
         } else {

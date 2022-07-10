@@ -62,14 +62,6 @@ public abstract class Player {
         }
     }
 
-
-//    public boolean actionCardDirection (Card topCard, Card handCard) {
-//        System.out.println("This is function actionCardPlayOrDont: TopCard: " + topCard + " HandCard: " + handCard);
-//        if (topCard.getZeichen().equals("<->") && handCard.getZeichen().equals("<->")) {
-//            return true;
-//        }
-//    }
-
     public void fillEmptyCardDeck(CardDeck deck, DropPile drop) {      //when CardDeck is empty, we add wih this method all cards from dropPile
         if (deck == null) {
             for (int i = 0; i < drop.getDropPile().size() - 2; i++) {
@@ -77,7 +69,7 @@ public abstract class Player {
                 System.out.println("CardDeck is full");
             }
         }
-        System.out.println("Droppile is empty");
+        System.out.println("Drop pile is empty");
     }
 
     public void takeCard(CardDeck deck) {

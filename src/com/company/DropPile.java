@@ -16,7 +16,6 @@ public class DropPile {
     // when one card is thrown it goes on the pile into new Arraylist
     public void dropCard(Card card) {
         dropPile.add(card);
-        System.out.println("This is the latest card: " + card);
         System.out.println("All cards in dropPile: " + dropPile);
     }
 

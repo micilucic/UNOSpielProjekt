@@ -72,7 +72,6 @@ public class UnoApp {
     }
 
     public void cicleTroughPlayers() throws IOException {
-        System.out.println("--cicleTroughPlayers() START. current player index: " + currentPlayerIndex + ", clockwise: " + clockwise);
         if (clockwise) {
             currentPlayerIndex++;
             if (currentPlayerIndex == 4) {
@@ -86,10 +85,6 @@ public class UnoApp {
         }
         System.out.println("cicleTroughPlayers, index= " + currentPlayerIndex);
         //todo: direction abrafeg, überlauf
-        System.out.println("--cicleTroughPlayers() END. current player index: " + currentPlayerIndex + ", clockwise: " + clockwise);
-//        for (int i = 0; i < players.size(); i++) {
-//            players.get(i).playCards();
-//        }
     }
 
     public static void help() throws IOException {
@@ -180,17 +175,28 @@ public class UnoApp {
                 startNewRound();
             }
             if (drop.getLatestCard().getZeichen() != null && drop.getLatestCard().getZeichen().equals("Ø")) {
-                currentPlayerIndex = currentPlayerIndex + 2;
-                if (currentPlayerIndex == 3) {
-                    currentPlayerIndex = 1;
-                    System.out.println("This is skip method: Current player index is: " + currentPlayerIndex);
-                } else if (currentPlayerIndex == 4) {
-                    currentPlayerIndex = 1;
-                } else if (currentPlayerIndex == 5) {
-                    currentPlayerIndex = 1;
+                if (clockwise) {
+                    if (currentPlayerIndex == 0) {
+                        currentPlayerIndex = 2;
+                    } else if (currentPlayerIndex == 1) {
+                        currentPlayerIndex = 3;
+                    } else if (currentPlayerIndex == 2) {
+                        currentPlayerIndex = 0;
+                    } else {
+                        currentPlayerIndex = 1;
+                    }
                 } else {
-                    currentPlayerIndex = 1;
+                    if (currentPlayerIndex == 0) {
+                        currentPlayerIndex = 2;
+                    } else if (currentPlayerIndex == 1) {
+                        currentPlayerIndex = 3;
+                    } else if (currentPlayerIndex == 2) {
+                        currentPlayerIndex = 0;
+                    } else {
+                        currentPlayerIndex = 1;
+                    }
                 }
+                System.out.println("This is skip player function! Next player is: " + currentPlayerIndex);
             }
             if (drop.getLatestCard().getZeichen() != null && drop.getLatestCard().getZeichen().equals("<->")) {
                 if (clockwise) {
@@ -211,6 +217,9 @@ public class UnoApp {
             cicleTroughPlayers();
             if (drop.getLatestCard().getZeichen() != null && drop.getLatestCard().getZeichen().equals("+2")) {
                 cicleTroughPlayers();
+                getPlayers().get(currentPlayerIndex).takeCard(deck);
+                getPlayers().get(currentPlayerIndex).takeCard(deck);
+                currentPlayerIndex = currentPlayerIndex + 1;
             }
         }
     }
