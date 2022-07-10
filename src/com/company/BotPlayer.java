@@ -91,14 +91,14 @@ public class BotPlayer extends Player {
     @Override
     public String chooseColor() {
         DropPile d = new DropPile();
-        Player p = new BotPlayer(null);
+        Player bot = new BotPlayer(null);
 
         boolean pickedColor = false;
-        String chosenColor = null;
+        String chosenColor = bot.getHandCards().get(1).getColor();
 
-        d.getLatestCard().setColor("Blue");
+        d.getLatestCard().setColor(chosenColor);
         System.out.printf("The color of the latest card is: " + chosenColor);
-        return chosenColor;
+        return d.getLatestCard().getColor();
     }
 }
 

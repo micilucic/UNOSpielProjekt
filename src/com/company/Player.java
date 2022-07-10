@@ -46,18 +46,19 @@ public abstract class Player {
     public boolean canThisCardBePlayed(Card topCard, Card handCard) {
 
         System.out.println("This is function canThisCardBePlayed: TopCard: " + topCard + " HandCard: " + handCard);
-        if (topCard.getColor().equals(handCard.getColor())) {
+        if (topCard.getColor()!= null && topCard.getColor().equals(handCard.getColor()) || (topCard.getZeichen()!=null && handCard.getZeichen()!=null) && topCard.getZeichen().equals(handCard.getZeichen())) {
             return true;
         } else if (topCard.getCardNr() == handCard.getCardNr()) {
             return true;
-        } else if ((handCard.getColor().equals("black") && handCard.getZeichen().equals("~"))) {
+        } /*else if (handCard.getColor().equals("black")) {
             return true;
-        } else if (topCard.getColor().equals(handCard.getColor()) && (topCard.getZeichen().equals(handCard.getZeichen()))) {
+        }*/ else if ((handCard.getZeichen()!=null && handCard.getZeichen().equals(topCard.getZeichen()))) {
+            return true;
+        } else if ((handCard.getZeichen()!=null || handCard.getColor() != null) && topCard.getColor().equals(handCard.getColor()) || topCard.getZeichen()!=null && (topCard.getZeichen().equals(handCard.getZeichen()))) {
             return true;
         } if (!topCard.getColor().equals(handCard.getColor()) && topCard.getCardNr()!=handCard.getCardNr() && (topCard.getZeichen()!=null) && !topCard.getZeichen().equals(handCard.getZeichen()) && (handCard.getColor().equals("black") && handCard.getZeichen().equals("~+4"))) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

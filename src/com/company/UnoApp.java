@@ -176,24 +176,26 @@ public class UnoApp {
             }
             if (drop.getLatestCard().getZeichen() != null && drop.getLatestCard().getZeichen().equals("Ø")) {
                 if (clockwise) {
+                    currentPlayerIndex++;
                     if (currentPlayerIndex == 0) {
-                        currentPlayerIndex = 3;
-                    } else if (currentPlayerIndex == 1) {
-                        currentPlayerIndex = 0;
-                    } else if (currentPlayerIndex == 2) {
-                        currentPlayerIndex = 1;
-                    } else {
                         currentPlayerIndex = 2;
+                    } else if (currentPlayerIndex == 1) {
+                        currentPlayerIndex = 3;
+                    } else if (currentPlayerIndex == 2) {
+                        currentPlayerIndex = 0;
+                    } else {
+                        currentPlayerIndex = 1;
                     }
                 } else {
+                    currentPlayerIndex--;
                     if (currentPlayerIndex == 0) {
-                        currentPlayerIndex = 1;
-                    } else if (currentPlayerIndex == 1) {
                         currentPlayerIndex = 2;
-                    } else if (currentPlayerIndex == 2) {
+                    } else if (currentPlayerIndex == 1) {
                         currentPlayerIndex = 3;
-                    } else {
+                    } else if (currentPlayerIndex == 2) {
                         currentPlayerIndex = 0;
+                    } else {
+                        currentPlayerIndex = 1;
                     }
                 }
                 System.out.println("This is skip player function! Next player is: " + currentPlayerIndex);
