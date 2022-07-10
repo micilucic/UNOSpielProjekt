@@ -74,17 +74,15 @@ public class UnoApp {
     public void cicleTroughPlayers() throws IOException {
         if (clockwise) {
             currentPlayerIndex++;
-            if (currentPlayerIndex == 4) {
+            if ( currentPlayerIndex == 3) {
                 currentPlayerIndex = 0;
             }
         } else if (!clockwise) {
             currentPlayerIndex--;
-            if (currentPlayerIndex < 0) {
+            if (currentPlayerIndex == -1) {
                 currentPlayerIndex = 3;
             }
         }
-        System.out.println("cicleTroughPlayers, index= " + currentPlayerIndex);
-        //todo: direction abrafeg, überlauf
     }
 
     public static void help() throws IOException {
@@ -104,7 +102,7 @@ public class UnoApp {
         fileReader.close();
     }
 
-   public void UnoButton() throws IOException {
+    public void UnoButton() throws IOException {
         Scanner scanner = new Scanner(System.in);
         if (players.get(currentPlayerIndex).getHandCards().size() == 2) {
             System.out.println("You have only two more cards left");
@@ -126,15 +124,19 @@ public class UnoApp {
     }
 
 
-    public void firstCardOpen() {                     //erste Karte wenn der Spiel start
+    public void firstCardOpen() throws IOException {                     //erste Karte wenn der Spiel start
         Card c = new Card(null, null, 0);
         c = deck.drawCard();
-        while (c.getZeichen() != null && !c.getZeichen().equals("<->")) {
+        while (c.getZeichen() != null && !c.getZeichen().equals("<->") && !c.getZeichen().equals("Ø") && !c.getZeichen().equals("+2")) {
             System.out.println("Your card is: " + c + " First card cannot be a symbol, unless it is reverse card, return card");
             c = deck.drawCard();
             deck.remove(c);
         }
-        if (c.getZeichen() != null && c.getZeichen().equals("<->") || (c.getZeichen()!=null && (c.getZeichen().equals("<->") && c.getColor().equals(drop.getLatestCard().getColor())))) {
+        if (c.getZeichen() != null && c.getZeichen().equals("Ø")) {
+            System.out.println("This is a skip situation! You are missing out on this one!");
+            cicleTroughPlayers();
+        }
+        if (c.getZeichen() != null && c.getZeichen().equals("<->") || (c.getZeichen() != null && (c.getZeichen().equals("<->") && c.getColor().equals(drop.getLatestCard().getColor())))) {
             if (clockwise == true) {
                 clockwise = false;
             } else {
@@ -142,10 +144,15 @@ public class UnoApp {
             }
         }
         if (c.getZeichen() != null && c.getZeichen().equals("~")) {
-            players.get(currentPlayerIndex).chooseColor();
+            getPlayers().get(currentPlayerIndex).chooseColor();
+        }
+        if (c.getZeichen()!=null && c.getZeichen().equals("+2")) {
+            getPlayers().get(currentPlayerIndex).takeCard(deck);
+            getPlayers().get(currentPlayerIndex).takeCard(deck);
         }
         drop.dropCard(c);
     }
+
 
     public void startNewRound() {
         round++;
@@ -153,7 +160,7 @@ public class UnoApp {
         System.out.println("Current player has no cards left. This round is over. Let´s start new round!");
         for (int i = 0; i < players.size(); i++) { // um die Punkte zusammenzuzählen
             if (players.get(i).getHandCards() == null) { // der Spieler hat die Runde gewonnen
-                System.out.println("Spieler: " + i + " hat keine Karten mehr");
+                System.out.println("Player: " + i + " has no more cards left.");
                 System.out.println(players.get(i) + " has won: " + sum);
             } else {
                 sum = sum + players.get(i).getHandCardPoints();
@@ -162,7 +169,7 @@ public class UnoApp {
         }
     }
 
-    public void Run() throws IOException, SQLException {
+    public void Run() throws IOException {
         initialize(); // aks players for name, write names for human players, create bots, create handcards
         firstCardOpen();
         //  printState();
@@ -174,32 +181,7 @@ public class UnoApp {
                 System.out.println("Start new round");
                 startNewRound();
             }
-            if (drop.getLatestCard().getZeichen() != null && drop.getLatestCard().getZeichen().equals("Ø")) {
-                if (clockwise) {
-                    currentPlayerIndex++;
-                    if (currentPlayerIndex == 0) {
-                        currentPlayerIndex = 2;
-                    } else if (currentPlayerIndex == 1) {
-                        currentPlayerIndex = 3;
-                    } else if (currentPlayerIndex == 2) {
-                        currentPlayerIndex = 0;
-                    } else {
-                        currentPlayerIndex = 1;
-                    }
-                } else {
-                    currentPlayerIndex--;
-                    if (currentPlayerIndex == 0) {
-                        currentPlayerIndex = 2;
-                    } else if (currentPlayerIndex == 1) {
-                        currentPlayerIndex = 3;
-                    } else if (currentPlayerIndex == 2) {
-                        currentPlayerIndex = 0;
-                    } else {
-                        currentPlayerIndex = 1;
-                    }
-                }
-                System.out.println("This is skip player function! Next player is: " + currentPlayerIndex);
-            }
+
             if (drop.getLatestCard().getZeichen() != null && drop.getLatestCard().getZeichen().equals("<->")) {
                 if (clockwise) {
                     clockwise = false;
@@ -210,43 +192,86 @@ public class UnoApp {
                 }
             } else {
                 System.out.println("clockwise is: " + clockwise);
-                System.out.println("next player: " + currentPlayerIndex);
+                if (clockwise) {
+                    System.out.println("next player: " + currentPlayerIndex++);
+                } else {
+                    System.out.println("next player: " + currentPlayerIndex--);
+                }
                 //     readUserInput();
                 //     updateState();
                 //     printState(); //Nur die Ausgabe
             }
-           UnoButton();
-           cicleTroughPlayers();
             if (drop.getLatestCard().getZeichen() != null && drop.getLatestCard().getZeichen().equals("+2")) {
-                getPlayers().get(currentPlayerIndex).takeCard(deck);
-                getPlayers().get(currentPlayerIndex).takeCard(deck);
-                if (clockwise) {
-                    if (currentPlayerIndex == 0) {
-                    currentPlayerIndex = 1;
-                } else if (currentPlayerIndex == 1) {
-                    currentPlayerIndex = 2;
-                } else if (currentPlayerIndex == 2) {
-                    currentPlayerIndex = 3;
-                } else {
-                    currentPlayerIndex = 0;
-                }
-                } else {
-                    if (currentPlayerIndex == 0) {
-                        currentPlayerIndex = 3;
-                    } else if (currentPlayerIndex == 1) {
-                        currentPlayerIndex = 0;
-                    } else if (currentPlayerIndex == 2) {
+                System.out.println("Ooops! You must take two cards and skip this round!" + currentPlayerIndex + 1);
+                /*if (clockwise) {
+                    currentPlayerIndex++;*/
+                    /*if (currentPlayerIndex == 0) {
                         currentPlayerIndex = 1;
-                    } else {
+                    } else if (currentPlayerIndex == 1) {
                         currentPlayerIndex = 2;
-                    }
-
-                }
+                    } else if (currentPlayerIndex == 2) {
+                        currentPlayerIndex = 3;
+                    } else {
+                        currentPlayerIndex = 0;*/
             }
+                    /*if (currentPlayerIndex > 3) {
+                        currentPlayerIndex = 0;*/
+           /* } else {
+                currentPlayerIndex--;
+                {*/
+                      /*  if (currentPlayerIndex == 0) {
+                            currentPlayerIndex = 3;
+                        } else if (currentPlayerIndex == 1) {
+                            currentPlayerIndex = 0;
+                        } else if (currentPlayerIndex == 2) {
+                            currentPlayerIndex = 1;
+                        } else {
+                            currentPlayerIndex = 2;
+                        }*/
+                   /* if (currentPlayerIndex < 0) {
+                        currentPlayerIndex = 3;
+                    }*/
+            getPlayers().get(currentPlayerIndex).takeCard(deck);
+            getPlayers().get(currentPlayerIndex).takeCard(deck);
+
         }
+        if (drop.getLatestCard().getZeichen() != null && drop.getLatestCard().getZeichen().equals("~+4")) {
+            System.out.println("Ooops! You must take four cards and skip this round!" + currentPlayerIndex + 1);
+            getPlayers().get(currentPlayerIndex).takeCard(deck);
+            getPlayers().get(currentPlayerIndex ).takeCard(deck);
+            getPlayers().get(currentPlayerIndex).takeCard(deck);
+            getPlayers().get(currentPlayerIndex ).takeCard(deck);
+        }
+          /*  if (clockwise) {
+                currentPlayerIndex++;*/
+                       /* if (currentPlayerIndex == 0) {
+                            currentPlayerIndex = 1;
+                        } else if (currentPlayerIndex == 1) {
+                            currentPlayerIndex = 2;
+                        } else if (currentPlayerIndex == 2) {
+                            currentPlayerIndex = 3;
+                        } else {
+                            currentPlayerIndex = 0;*/
+         /*   } else {
+                currentPlayerIndex--;*/
+                        /*if (currentPlayerIndex == 0) {
+                            currentPlayerIndex = 3;
+                        } else if (currentPlayerIndex == 1) {
+                            currentPlayerIndex = 0;
+                        } else if (currentPlayerIndex == 2) {
+                            currentPlayerIndex = 1;
+                        } else {
+                            currentPlayerIndex = 2;
+                        }*/
+
+        /*  }*/
+
+        UnoButton();
+        cicleTroughPlayers();
     }
 
-    public void initialize() throws SQLException {
+
+    public void initialize() {
         //TODO: Initialisierungen hier durchführen
         //Speieler und Karten anlegen !!! - man initialisiert Sachen, die nur einmal intialisert werden müssen
         deck.createCards();

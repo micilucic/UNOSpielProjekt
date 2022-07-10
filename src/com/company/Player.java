@@ -50,13 +50,13 @@ public abstract class Player {
             return true;
         } else if (topCard.getCardNr() == handCard.getCardNr()) {
             return true;
-        } /*else if (handCard.getColor().equals("black")) {
+        } else if (handCard.getColor().equals("black")) {
             return true;
-        }*/ else if ((handCard.getZeichen()!=null && handCard.getZeichen().equals(topCard.getZeichen()))) {
+        } else if ((handCard.getZeichen()!=null && handCard.getZeichen().equals(topCard.getZeichen()))) {
             return true;
-        } else if ((handCard.getZeichen()!=null || handCard.getColor() != null) && topCard.getColor().equals(handCard.getColor()) || topCard.getZeichen()!=null && (topCard.getZeichen().equals(handCard.getZeichen()))) {
+        } else if ((handCard.getZeichen()!=null || handCard.getColor() != null) && (topCard.getColor().equals(handCard.getColor()) || topCard.getZeichen()!=null) && (topCard.getZeichen().equals(handCard.getZeichen()))) {
             return true;
-        } if (!topCard.getColor().equals(handCard.getColor()) && topCard.getCardNr()!=handCard.getCardNr() && (topCard.getZeichen()!=null) && !topCard.getZeichen().equals(handCard.getZeichen()) && (handCard.getColor().equals("black") && handCard.getZeichen().equals("~+4"))) {
+        } if ((!topCard.getColor().equals(handCard.getColor()) && topCard.getCardNr()!=handCard.getCardNr() && (topCard.getZeichen()!=null) && !topCard.getZeichen().equals(handCard.getZeichen()) && (handCard.getColor().equals("black") && handCard.getZeichen().equals("~+4")))) {
             return true;
         } else {
             return false;
