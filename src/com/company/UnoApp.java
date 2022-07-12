@@ -91,7 +91,7 @@ public class UnoApp {
         // System.out.println("If you want to read the rules of the game, please enter \"help\"");
         //  Scanner scannerHelp = new Scanner(System.in);
         //  String help = scannerHelp.nextLine();
-        File rulesOfTheGame = new File("C:\\Users\\s51638\\IdeaProjects\\ProjektI\\src\\UnoSpielregeln.txt");
+        File rulesOfTheGame = new File("C:\\Users\\s51638\\IdeaProjects\\UNOSpielProjekt\\Spielregel.txt");
         FileReader fileReader = new FileReader(rulesOfTheGame);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         String line = bufferedReader.readLine();
